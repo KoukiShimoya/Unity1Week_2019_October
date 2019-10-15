@@ -16,4 +16,17 @@ namespace GetPanelHierarchy
             return parent.transform.GetChild(0).gameObject;
         }
     }
+
+    public static class ChildPanel
+    {
+        public static GameObject ChildSprite_ChildInParentSprite(GameObject childSprite)
+        {
+            return childSprite.transform.parent.GetChild(1).gameObject;
+        }
+
+        public static GameObject ChildPanel_ChildSprite(GameObject childPanel)
+        {
+            return childPanel.transform.GetChild(1).gameObject;
+        }
+    }
 }
