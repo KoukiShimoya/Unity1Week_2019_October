@@ -11,6 +11,14 @@ namespace Constants
         public static char crlf = '\n';
     }
 
+    public static class Value
+    {
+        public static int cameraZ = -10;
+        public static string childBackSprite = "ChildBackSprite";
+        public static int parentPositionZ = -2;
+        public static int childInParentPositionZ = -1;
+    }
+
     public static class Useful
     {
         public static bool isSameChildAttributeValue(ChildAttribute childAttribute0, ChildAttribute childAttribute1)

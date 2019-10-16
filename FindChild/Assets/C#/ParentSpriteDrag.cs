@@ -9,47 +9,77 @@ using GetPanelHierarchy;
 
 public class ParentSpriteDrag : MonoBehaviour
 {
-    private RectTransform rectTransform;
-    private RectTransform spriteRect;
-    private RectTransform parentRect;
+    [SerializeField, ShowOnly] private bool isDraging;
+    [SerializeField, ShowOnly] private bool isExitChildBackSprite;
+    [SerializeField, ShowOnly] private GameObject enterChildBackSprite;
 
-    private void Start()
+    private void OnMouseDrag()
     {
-        rectTransform = this.gameObject.GetComponent<RectTransform>();
-        parentRect = ParentSprite.ParentSprite_Parent(this.gameObject).GetComponent<RectTransform>();
-    }
-
-    public void OnDrag()
-    {
-        rectTransform.localPosition =
-            UIChangePosition.UIChangeToMousePosition(SerializeObject.Instance.GetMainCanvasRectTransform, parentRect, 0);
-    }
-
-    public void OnBeginDrag()
-    {
-        spriteRect = this.GetComponent<RectTransform>();
-    }
-
-    public void EndDrag()
-    {
-        GameObject[] childPanels = SerializeObject.Instance.GetChildPanelsRoot.GetOnlyOwnChildren();
-        foreach (var childPanel in childPanels)
+        if (!isDraging)
         {
-            if (UIChangePosition.CheckOverlap(rectTransform, childPanel.GetComponent<RectTransform>()))
-            {
-                GetPanelHierarchy.ChildPanel.ChildPanel_ChildInParentSprite(childPanel).GetComponent<Image>().sprite =
-                    GetPanelHierarchy.ParentSprite.Parent_ParentSprite(this.gameObject).GetComponent<Image>().sprite;
-                GetPanelHierarchy.ChildPanel.ChildPanel_ChildInParentSprite(childPanel)
-                    .GetComponent<ChildInParentOwnParentObject>().parentObj = this.gameObject;
-                this.gameObject.SetActive(false);
-                /*
-                if (Useful.isSameChildAttributeValue(childPanel.GetComponent<OneChildAttribute>().childAttribute, this.gameObject.GetComponent<OneChildAttribute>().childAttribute))
-                {
-                    GetPanelHierarchy.ChildPanel.ChildPanel_ChildSprite(childPanel).GetComponent<Image>().sprite =
-                        GetPanelHierarchy.ParentSprite.Parent_ParentSprite(this.gameObject).GetComponent<Image>().sprite;
-                }
-                */
-            }
+            OnDragStart();
+        }
+        isDraging = true;
+        Vector2 objectPointInScreen
+            = Camera.main.WorldToScreenPoint(this.transform.parent.transform.position);
+
+        Vector3 mousePointInScreen
+            = new Vector3(Input.mousePosition.x,
+                Input.mousePosition.y,Value.cameraZ);
+        
+        Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
+        mousePointInWorld.z = 0;
+        this.gameObject.transform.parent.transform.position = mousePointInWorld;
+    }
+
+    private void OnMouseDown()
+    {
+        
+    }
+
+    private void OnMouseUp()
+    {
+        if (isDraging)
+        {
+            OnDragEnd();
+            isDraging = false;
+        }
+    }
+
+    private void OnDragStart()
+    {
+        
+    }
+
+    private void OnDragEnd()
+    {
+        if (isExitChildBackSprite)
+        {
+            enterChildBackSprite.transform.parent.GetChild(3).GetComponent<SpriteRenderer>().sprite =
+                GetComponent<SpriteRenderer>().sprite;
+            enterChildBackSprite.transform.parent.GetChild(3).GetComponent<ChildInParentOwnParentObject>().parentObj =
+                this.gameObject.transform.parent.gameObject;
+            this.gameObject.transform.parent.gameObject.SetActive(false);
+            isExitChildBackSprite = false;
+            enterChildBackSprite = null;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag(Value.childBackSprite))
+        {
+            isExitChildBackSprite = true;
+            enterChildBackSprite = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag(Value.childBackSprite))
+        {
+            isExitChildBackSprite = false;
+            enterChildBackSprite = null;
         }
     }
 }

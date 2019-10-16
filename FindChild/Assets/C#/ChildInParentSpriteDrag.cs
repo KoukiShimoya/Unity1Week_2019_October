@@ -8,40 +8,87 @@ using UnityEngine.UI;
 
 public class ChildInParentSpriteDrag : MonoBehaviour
 {
-    private GameObject parentObject;
-    private RectTransform rectTransform;
     
-    public void OnDrag()
+    [SerializeField, ShowOnly] private bool isDraging;
+    [SerializeField, ShowOnly] private bool isExitChildBackSprite;
+    private SpriteRenderer spriteRenderer;
+    private Vector2 defaultPanelPosition = new Vector2(-64, -112);
+    private void OnMouseDrag()
     {
-        if (parentObject != null)
+        if (spriteRenderer.sprite == null)
         {
-            rectTransform.localPosition =
-                UIChangePosition.UIChangeToMousePosition(SerializeObject.Instance.GetMainCanvasRectTransform,
-                    rectTransform, 1);
+            return;
+        }
+
+        if (!isDraging)
+        {
+            OnDragStart();
+        }
+        isDraging = true;
+        Vector2 objectPointInScreen
+            = Camera.main.WorldToScreenPoint(this.transform.position);
+
+        Vector3 mousePointInScreen
+            = new Vector3(Input.mousePosition.x,
+                Input.mousePosition.y,Value.cameraZ);
+        
+        Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
+        mousePointInWorld.z = Value.childInParentPositionZ;
+        this.transform.position = mousePointInWorld;
+    }
+
+    private void OnMouseDown()
+    {
+        
+    }
+
+    private void OnMouseUp()
+    {
+        if (isDraging)
+        {
+            OnDragEnd();
+            isDraging = false;
         }
     }
 
-    public void OnBeginDrag()
+    private void OnDragStart()
     {
-        parentObject = this.gameObject.GetComponent<ChildInParentOwnParentObject>().parentObj;
+        
     }
 
-    public void OnEndDrag()
+    private void OnDragEnd()
     {
-        if (UIChangePosition.CheckOverlap(rectTransform,
-            SerializeObject.Instance.GetParentBackSprite.GetComponent<RectTransform>()))
+        if (isExitChildBackSprite)
         {
-            Debug.Log("ChildInParentEndDrag");
-            parentObject.SetActive(true);
-            parentObject.transform.localPosition = this.gameObject.transform.localPosition;
-            rectTransform.anchoredPosition = Vector2.zero;
-            this.gameObject.GetComponent<Image>().sprite = null;
-            parentObject = null;
+            GameObject parent = this.gameObject.GetComponent<ChildInParentOwnParentObject>().parentObj;
+            parent.SetActive(true);
+            parent.transform.localPosition = this.gameObject.transform.localPosition;
+            this.gameObject.transform.position = defaultPanelPosition;
+
+            spriteRenderer.sprite = null;
+            isExitChildBackSprite = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log(other.gameObject);
+        if (other.gameObject == SerializeObject.Instance.GetParentsBackSprite)
+        {
+            isExitChildBackSprite = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject == SerializeObject.Instance.GetParentsBackSprite)
+        {
+            isExitChildBackSprite = false;
         }
     }
 
     private void Start()
     {
-        rectTransform = this.gameObject.GetComponent<RectTransform>();
+        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
     }
 }

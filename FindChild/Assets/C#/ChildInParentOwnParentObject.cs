@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChildInParentOwnParentObject : MonoBehaviour
 {
-    public GameObject parentObj;
+    [ShowOnly] public GameObject parentObj;
 
     private void Start()
     {
