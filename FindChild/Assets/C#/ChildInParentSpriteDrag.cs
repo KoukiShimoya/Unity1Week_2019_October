@@ -12,7 +12,7 @@ public class ChildInParentSpriteDrag : MonoBehaviour
     [SerializeField, ShowOnly] private bool isDraging;
     [SerializeField, ShowOnly] private bool isExitChildBackSprite;
     private SpriteRenderer spriteRenderer;
-    private Vector2 defaultPanelPosition = new Vector2(-64, -112);
+    private Vector3 defaultPanelPosition = new Vector3(-64, -112, Value.childInParentPositionZ);
     private void OnMouseDrag()
     {
         if (spriteRenderer.sprite == null)
@@ -62,8 +62,10 @@ public class ChildInParentSpriteDrag : MonoBehaviour
         {
             GameObject parent = this.gameObject.GetComponent<ChildInParentOwnParentObject>().parentObj;
             parent.SetActive(true);
-            parent.transform.localPosition = this.gameObject.transform.localPosition;
-            this.gameObject.transform.position = defaultPanelPosition;
+            SerializeObject.Instance.GetSpeechBubbleText.SetActive(true);
+            parent.transform.position = this.gameObject.transform.position;
+            parent.transform.GetChild(0).GetComponent<ParentSpriteDrag>().SpeechTextMove();
+            this.gameObject.transform.localPosition = defaultPanelPosition;
 
             spriteRenderer.sprite = null;
             isExitChildBackSprite = false;
@@ -72,7 +74,6 @@ public class ChildInParentSpriteDrag : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.gameObject);
         if (other.gameObject == SerializeObject.Instance.GetParentsBackSprite)
         {
             isExitChildBackSprite = true;

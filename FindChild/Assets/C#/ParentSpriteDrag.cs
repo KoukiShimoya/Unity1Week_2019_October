@@ -30,11 +30,39 @@ public class ParentSpriteDrag : MonoBehaviour
         Vector3 mousePointInWorld = Camera.main.ScreenToWorldPoint(mousePointInScreen);
         mousePointInWorld.z = 0;
         this.gameObject.transform.parent.transform.position = mousePointInWorld;
+        
+        SpeechTextMove();
     }
 
     private void OnMouseDown()
     {
-        
+        GameObject speechBubble = this.gameObject.transform.parent.GetChild(1).gameObject;
+        GameObject speechTextUI = SerializeObject.Instance.GetSpeechBubbleText;
+        if (!speechBubble.activeSelf)
+        {
+            speechBubble.SetActive(true);
+            speechTextUI.SetActive(true);
+            speechTextUI.GetComponent<Text>().text =
+                SpeechBubbleTextCreate.ChildAttributeToText(this.gameObject.transform.parent
+                    .GetComponent<OneChildAttribute>().childAttribute);
+            SpeechTextMove();
+        }
+        else
+        {
+            speechBubble.SetActive(false);
+            speechTextUI.SetActive(false);
+        }
+    }
+
+    public void SpeechTextMove()
+    {
+        GameObject speechTextUI = SerializeObject.Instance.GetSpeechBubbleText;
+        GameObject speechBubble = this.gameObject.transform.parent.GetChild(1).gameObject;
+        Vector3 speechBubbleLeftUp =
+            new Vector3(speechBubble.transform.position.x - speechBubble.transform.localScale.x / 2,
+                speechBubble.transform.position.y + speechBubble.transform.localScale.y / 2,
+                speechBubble.transform.position.z);
+        speechTextUI.transform.position = Camera.main.WorldToScreenPoint(speechBubbleLeftUp);
     }
 
     private void OnMouseUp()
@@ -60,6 +88,9 @@ public class ParentSpriteDrag : MonoBehaviour
             enterChildBackSprite.transform.parent.GetChild(3).GetComponent<ChildInParentOwnParentObject>().parentObj =
                 this.gameObject.transform.parent.gameObject;
             this.gameObject.transform.parent.gameObject.SetActive(false);
+            
+            SerializeObject.Instance.GetSpeechBubbleText.SetActive(false);
+            
             isExitChildBackSprite = false;
             enterChildBackSprite = null;
         }

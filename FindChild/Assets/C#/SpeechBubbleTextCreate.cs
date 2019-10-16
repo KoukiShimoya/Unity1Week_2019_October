@@ -6,14 +6,11 @@ using ChildrenAttribute;
 using Constants;
 using UnityEngine.UI;
 
-public class SpeechBubbleTextCreate : MonoBehaviour
+public static class SpeechBubbleTextCreate
 {
     // Start is called before the first frame update
-    void Start()
+    public static string ChildAttributeToText(ChildAttribute childAttribute)
     {
-        GameObject parent = ParentSprite.SpeechBubbleText_Parent(this.gameObject);
-        ChildAttribute childAttribute = parent.GetComponent<OneChildAttribute>().childAttribute;
-
         string bubbleText = "";
         
         if (childAttribute.capAttribute.understanding)
@@ -39,11 +36,10 @@ public class SpeechBubbleTextCreate : MonoBehaviour
             bubbleText += "名前は" + childAttribute.nameAttribute.name;
         }
 
-        this.gameObject.GetComponent<Text>().text = bubbleText;
-        ParentSprite.Parent_SpeechBubbleSprite(parent).SetActive(false);
+        return bubbleText;
     }
 
-    private string AddNewLine(string str)
+    private static string AddNewLine(string str)
     {
         if (str == Word.empty)
         {

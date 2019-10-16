@@ -8,8 +8,8 @@ public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
     [SerializeField] private GameObject childPanelsRoot;
     [SerializeField] private GameObject parentsRoot;
     [SerializeField] private GameObject mainCanvasRoot;
-    [HideInInspector] private RectTransform mainCanvasRectTransform;
     [SerializeField] private GameObject parentsBackSprite;
+    [SerializeField] private GameObject speechBubbleText;
 
     public GameObject GetChildPanelsRoot
     {
@@ -31,13 +31,8 @@ public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
         get { return parentsBackSprite; }
     }
 
-    public RectTransform GetMainCanvasRectTransform
+    public GameObject GetSpeechBubbleText
     {
-        get { return mainCanvasRectTransform; }
-    }
-
-    private void Start()
-    {
-        mainCanvasRectTransform = mainCanvasRoot.GetComponent<RectTransform>();
+        get { return speechBubbleText; }
     }
 }
