@@ -16,9 +16,9 @@ public class SpeechBubbleTextCreate : MonoBehaviour
 
         string bubbleText = "";
         
-        if (childAttribute.hairAttribute.understanding)
+        if (childAttribute.capAttribute.understanding)
         {
-            bubbleText += "髪型は" + childAttribute.hairAttribute.hairType.ToString();
+            bubbleText += "帽子は" + childAttribute.capAttribute.hasCap;
         }
 
         if (childAttribute.sexAttribute.understanding)
@@ -39,13 +39,8 @@ public class SpeechBubbleTextCreate : MonoBehaviour
             bubbleText += "名前は" + childAttribute.nameAttribute.name;
         }
 
-        if (childAttribute.shirtAttribute.understanding)
-        {
-            bubbleText = AddNewLine(bubbleText);
-            bubbleText += "シャツの色は" + childAttribute.shirtAttribute.shirtType.ToString();
-        }
-
         this.gameObject.GetComponent<Text>().text = bubbleText;
+        ParentSprite.Parent_SpeechBubbleSprite(parent).SetActive(false);
     }
 
     private string AddNewLine(string str)

@@ -5,35 +5,29 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Constants;
+using GetPanelHierarchy;
 
 public class ParentSpriteDrag : MonoBehaviour
 {
-    [SerializeField] private RectTransform canvasRect;
     private RectTransform rectTransform;
-    [SerializeField] private RectTransform targetRect;
+    private RectTransform spriteRect;
+    private RectTransform parentRect;
 
     private void Start()
     {
         rectTransform = this.gameObject.GetComponent<RectTransform>();
+        parentRect = ParentSprite.ParentSprite_Parent(this.gameObject).GetComponent<RectTransform>();
     }
+
     public void OnDrag()
     {
-        Vector2 position = Input.mousePosition;
-        Vector2 screenPoint = Camera.main.ScreenToViewportPoint(position);
-        
-        Vector2 worldObjectToScreenPosition = new Vector2(
-            ((screenPoint.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f)),
-            ((screenPoint.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f)));
-        
-        rectTransform.anchoredPosition = worldObjectToScreenPosition;
+        rectTransform.localPosition =
+            UIChangePosition.UIChangeToMousePosition(SerializeObject.Instance.GetMainCanvasRectTransform, parentRect, 0);
     }
-    
-    private bool CheckOverlap(RectTransform rectTrans1, RectTransform rectTrans2)
-    {
-        Rect rect1 = new Rect(rectTrans1.localPosition.x, rectTrans1.localPosition.y, rectTrans1.rect.width, rectTrans1.rect.height);
-        Rect rect2 = new Rect(rectTrans2.localPosition.x, rectTrans2.localPosition.y, rectTrans2.rect.width, rectTrans2.rect.height);
 
-        return rect1.Overlaps(rect2);
+    public void OnBeginDrag()
+    {
+        spriteRect = this.GetComponent<RectTransform>();
     }
 
     public void EndDrag()
@@ -41,13 +35,20 @@ public class ParentSpriteDrag : MonoBehaviour
         GameObject[] childPanels = SerializeObject.Instance.GetChildPanelsRoot.GetOnlyOwnChildren();
         foreach (var childPanel in childPanels)
         {
-            if (CheckOverlap(rectTransform, childPanel.GetComponent<RectTransform>()))
+            if (UIChangePosition.CheckOverlap(rectTransform, childPanel.GetComponent<RectTransform>()))
             {
+                GetPanelHierarchy.ChildPanel.ChildPanel_ChildInParentSprite(childPanel).GetComponent<Image>().sprite =
+                    GetPanelHierarchy.ParentSprite.Parent_ParentSprite(this.gameObject).GetComponent<Image>().sprite;
+                GetPanelHierarchy.ChildPanel.ChildPanel_ChildInParentSprite(childPanel)
+                    .GetComponent<ChildInParentOwnParentObject>().parentObj = this.gameObject;
+                this.gameObject.SetActive(false);
+                /*
                 if (Useful.isSameChildAttributeValue(childPanel.GetComponent<OneChildAttribute>().childAttribute, this.gameObject.GetComponent<OneChildAttribute>().childAttribute))
                 {
                     GetPanelHierarchy.ChildPanel.ChildPanel_ChildSprite(childPanel).GetComponent<Image>().sprite =
                         GetPanelHierarchy.ParentSprite.Parent_ParentSprite(this.gameObject).GetComponent<Image>().sprite;
                 }
+                */
             }
         }
     }

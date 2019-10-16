@@ -7,6 +7,9 @@ public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
 {
     [SerializeField] private GameObject childPanelsRoot;
     [SerializeField] private GameObject parentsRoot;
+    [SerializeField] private GameObject mainCanvasRoot;
+    [HideInInspector] private RectTransform mainCanvasRectTransform;
+    [SerializeField] private GameObject parentBackSprite;
 
     public GameObject GetChildPanelsRoot
     {
@@ -16,5 +19,25 @@ public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
     public GameObject GetParentsRoot
     {
         get { return parentsRoot; }
+    }
+
+    public GameObject GetMainCanvasRoot
+    {
+        get { return mainCanvasRoot; }
+    }
+
+    public GameObject GetParentBackSprite
+    {
+        get { return parentBackSprite; }
+    }
+
+    public RectTransform GetMainCanvasRectTransform
+    {
+        get { return mainCanvasRectTransform; }
+    }
+
+    private void Start()
+    {
+        mainCanvasRectTransform = mainCanvasRoot.GetComponent<RectTransform>();
     }
 }

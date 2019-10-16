@@ -7,32 +7,30 @@ namespace ChildrenAttribute
     [System.Serializable]
     public class ChildAttribute
     {
-        public HairAttribute hairAttribute;
+        public CapAttribute capAttribute;
         public SexAttribute sexAttribute;
         public AgeAttribute ageAttribute;
         public NameAttribute nameAttribute;
-        public ShirtAttribute shirtAttribute;
 
-        public ChildAttribute(HairAttribute hairAttribute, SexAttribute sexAttribute, AgeAttribute ageAttribute,
-            NameAttribute nameAttribute, ShirtAttribute shirtAttribute)
+        public ChildAttribute(CapAttribute capAttribute, SexAttribute sexAttribute, AgeAttribute ageAttribute,
+            NameAttribute nameAttribute)
         {
-            this.hairAttribute = hairAttribute;
+            this.capAttribute = capAttribute;
             this.sexAttribute = sexAttribute;
             this.ageAttribute = ageAttribute;
             this.nameAttribute = nameAttribute;
-            this.shirtAttribute = shirtAttribute;
         }
     }
 
     [System.Serializable]
-    public class HairAttribute
+    public class CapAttribute
     {
-        public HairType hairType;
+        public bool hasCap;
         public bool understanding;
 
-        public HairAttribute(HairType hairType, bool understanding)
+        public CapAttribute(bool hasCap, bool understanding)
         {
-            this.hairType = hairType;
+            this.hasCap = hasCap;
             this.understanding = understanding;
         }
     }
@@ -74,24 +72,6 @@ namespace ChildrenAttribute
             this.name = name;
             this.understanding = understanding;
         }
-    }
-    
-    [System.Serializable]
-    public class ShirtAttribute
-    {
-        public ShirtType shirtType;
-        public bool understanding;
-
-        public ShirtAttribute(ShirtType shirtType, bool understanding)
-        {
-            this.shirtType = shirtType;
-            this.understanding = understanding;
-        }
-    }
-
-    public enum HairType
-    {
-        Long
     }
 
     public enum SexType
