@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GetPanelHierarchy;
 using ChildrenAttribute;
 using Constants;
 using UnityEngine.UI;
@@ -9,7 +8,7 @@ using UnityEngine.UI;
 public static class SpeechBubbleTextCreate
 {
     // Start is called before the first frame update
-    public static string ChildAttributeToText(ChildAttribute childAttribute)
+    public static string ChildAttributeToText(ChildAttribute childAttribute, bool addNewLine)
     {
         string bubbleText = "";
         
@@ -20,19 +19,40 @@ public static class SpeechBubbleTextCreate
 
         if (childAttribute.sexAttribute.understanding)
         {
-            bubbleText = AddNewLine(bubbleText);
+            if (addNewLine)
+            {
+                bubbleText = AddNewLine(bubbleText);
+            }
+            else
+            {
+                bubbleText = AddComma(bubbleText);
+            }
             bubbleText += "性別は" + childAttribute.sexAttribute.sexType.ToString();
         }
 
         if (childAttribute.ageAttribute.understanding)
         {
-            bubbleText = AddNewLine(bubbleText);
+            if (addNewLine)
+            {
+                bubbleText = AddNewLine(bubbleText);
+            }
+            else
+            {
+                bubbleText = AddComma(bubbleText);
+            }
             bubbleText += "年齢は" + childAttribute.ageAttribute.age.ToString();
         }
 
         if (childAttribute.nameAttribute.understanding)
         {
-            bubbleText = AddNewLine(bubbleText);
+            if (addNewLine)
+            {
+                bubbleText = AddNewLine(bubbleText);
+            }
+            else
+            {
+                bubbleText = AddComma(bubbleText);
+            }
             bubbleText += "名前は" + childAttribute.nameAttribute.name;
         }
 
@@ -48,6 +68,18 @@ public static class SpeechBubbleTextCreate
         else
         {
             return str + Word.crlf;
+        }
+    }
+
+    private static string AddComma(string str)
+    {
+        if (str == Word.empty)
+        {
+            return str;
+        }
+        else
+        {
+            return str + Word.comma + Word.blank;
         }
     }
 }

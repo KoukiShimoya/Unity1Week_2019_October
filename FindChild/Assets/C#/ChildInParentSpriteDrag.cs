@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Constants;
-using GetPanelHierarchy;
 using UnityEngine.UI;
 
 public class ChildInParentSpriteDrag : MonoBehaviour
@@ -12,7 +11,9 @@ public class ChildInParentSpriteDrag : MonoBehaviour
     [SerializeField, ShowOnly] private bool isDraging;
     [SerializeField, ShowOnly] private bool isExitChildBackSprite;
     private SpriteRenderer spriteRenderer;
+    private float mouseDargTime = 0f;
     private Vector3 defaultPanelPosition = new Vector3(-64, -112, Value.childInParentPositionZ);
+    
     private void OnMouseDrag()
     {
         if (spriteRenderer.sprite == null)
@@ -24,7 +25,13 @@ public class ChildInParentSpriteDrag : MonoBehaviour
         {
             OnDragStart();
         }
-        isDraging = true;
+        
+        mouseDargTime += Time.deltaTime;
+        if (mouseDargTime < Value.mouseDragTime)
+        {
+            return;
+        }
+        
         Vector2 objectPointInScreen
             = Camera.main.WorldToScreenPoint(this.transform.position);
 
@@ -53,7 +60,8 @@ public class ChildInParentSpriteDrag : MonoBehaviour
 
     private void OnDragStart()
     {
-        
+        mouseDargTime = 0f;
+        isDraging = true;
     }
 
     private void OnDragEnd()
@@ -62,10 +70,12 @@ public class ChildInParentSpriteDrag : MonoBehaviour
         {
             GameObject parent = this.gameObject.GetComponent<ChildInParentOwnParentObject>().parentObj;
             parent.SetActive(true);
-            SerializeObject.Instance.GetSpeechBubbleText.SetActive(true);
+            SerializeObject.Instance.GetSpeechBubbleSprite.SetActive(true);
             parent.transform.position = this.gameObject.transform.position;
-            parent.transform.GetChild(0).GetComponent<ParentSpriteDrag>().SpeechTextMove();
+            parent.transform.GetChild(0).GetComponent<ParentSpriteDrag>().SpeechBubbleMove(this.gameObject.transform.position);
             this.gameObject.transform.localPosition = defaultPanelPosition;
+
+            this.gameObject.GetComponent<ChildInParentOwnParentObject>().parentObj = null;
 
             spriteRenderer.sprite = null;
             isExitChildBackSprite = false;

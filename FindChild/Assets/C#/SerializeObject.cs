@@ -7,9 +7,10 @@ public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
 {
     [SerializeField] private GameObject childPanelsRoot;
     [SerializeField] private GameObject parentsRoot;
-    [SerializeField] private GameObject mainCanvasRoot;
+    [SerializeField] private GameObject childWordText;
     [SerializeField] private GameObject parentsBackSprite;
     [SerializeField] private GameObject speechBubbleText;
+    [SerializeField] private GameObject speechBubbleSprite;
 
     public GameObject GetChildPanelsRoot
     {
@@ -21,9 +22,9 @@ public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
         get { return parentsRoot; }
     }
 
-    public GameObject GetMainCanvasRoot
+    public GameObject GetChildWordText
     {
-        get { return mainCanvasRoot; }
+        get { return childWordText; }
     }
 
     public GameObject GetParentsBackSprite
@@ -34,5 +35,10 @@ public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
     public GameObject GetSpeechBubbleText
     {
         get { return speechBubbleText; }
+    }
+
+    public GameObject GetSpeechBubbleSprite
+    {
+        get { return speechBubbleSprite; }
     }
 }

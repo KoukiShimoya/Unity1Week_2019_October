@@ -9,6 +9,8 @@ namespace Constants
     {
         public static string empty = "";
         public static char crlf = '\n';
+        public static string comma = ",";
+        public static string blank = " ";
     }
 
     public static class Value
@@ -17,13 +19,14 @@ namespace Constants
         public static string childBackSprite = "ChildBackSprite";
         public static int parentPositionZ = -2;
         public static int childInParentPositionZ = -1;
+        public static float mouseDragTime = 0.1f;
     }
 
     public static class Useful
     {
         public static bool isSameChildAttributeValue(ChildAttribute childAttribute0, ChildAttribute childAttribute1)
         {
-            if (childAttribute0.capAttribute != childAttribute1.capAttribute)
+            if (childAttribute0.capAttribute.hasCap != childAttribute1.capAttribute.hasCap)
             {
                 return false;
             }

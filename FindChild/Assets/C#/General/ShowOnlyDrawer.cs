@@ -1,6 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
+
 [CanEditMultipleObjects]
 [CustomPropertyDrawer(typeof(ShowOnly))]
 public class ShowOnlyDrawer : PropertyDrawer
@@ -17,3 +19,5 @@ public class ShowOnlyDrawer : PropertyDrawer
         GUI.enabled = true;
     }
 }
+
+#endif
