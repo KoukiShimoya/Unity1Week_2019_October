@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Constants;
+using UnityEditor;
 using UnityEngine.UI;
 
 public class ChildInParentSpriteDrag : MonoBehaviour
@@ -75,6 +76,10 @@ public class ChildInParentSpriteDrag : MonoBehaviour
             speechBubble.SetActive(true);
             speechBubble.GetComponent<SpeechBubbleMove>().parent = parent;
             speechBubble.GetComponent<SpeechBubbleMove>().ChangeSpeechBubblePosition();
+            GameObject speechBubbleText = SerializeObject.Instance.GetSpeechBubbleText;
+            speechBubbleText.GetComponent<Text>().text =
+                SpeechBubbleTextCreate.ChildAttributeToText_Parent(parent.GetComponent<OneChildAttribute>()
+                    .childAttribute);
             parent.transform.position = this.gameObject.transform.position;
             this.gameObject.transform.localPosition = defaultPanelPosition;
 
