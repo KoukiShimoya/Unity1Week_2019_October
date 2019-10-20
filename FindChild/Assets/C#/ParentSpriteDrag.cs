@@ -37,7 +37,8 @@ public class ParentSpriteDrag : MonoBehaviour
         mousePointInWorld.z = 0;
         this.gameObject.transform.parent.transform.position = mousePointInWorld;
         
-        SpeechBubbleMove(this.gameObject.transform.position);
+        GameObject speechBubble = SerializeObject.Instance.GetSpeechBubbleSprite;
+        speechBubble.GetComponent<SpeechBubbleMove>().parent = this.gameObject;
     }
 
     private void OnMouseDown()
@@ -47,25 +48,17 @@ public class ParentSpriteDrag : MonoBehaviour
         if (!speechBubble.activeSelf)
         {
             speechBubble.SetActive(true);
+            speechBubble.GetComponent<SpeechBubbleMove>().parent = this.gameObject;
+            speechBubble.GetComponent<SpeechBubbleMove>().ChangeSpeechBubblePosition();
             speechTextUI.GetComponent<Text>().text =
                 SpeechBubbleTextCreate.ChildAttributeToText(this.gameObject.transform.parent
                     .GetComponent<OneChildAttribute>().childAttribute, true);
-            SpeechBubbleMove(this.gameObject.transform.position);
         }
         else
         {
             speechBubble.SetActive(false);
+            speechBubble.GetComponent<SpeechBubbleMove>().parent = null;
         }
-    }
-
-    public void SpeechBubbleMove(Vector2 parentSpritePosition)
-    {
-        GameObject speechTextUI = SerializeObject.Instance.GetSpeechBubbleText;
-        GameObject speechBubble = SerializeObject.Instance.GetSpeechBubbleSprite;
-        Vector2 speechBubbleLeftUp =
-            new Vector2(parentSpritePosition.x,
-                parentSpritePosition.y);
-        speechBubble.transform.position = Camera.main.WorldToScreenPoint(speechBubbleLeftUp);
     }
 
     private void OnMouseUp()
@@ -97,8 +90,10 @@ public class ParentSpriteDrag : MonoBehaviour
                 childInParenetSpriteRenderer.sprite = GetComponent<SpriteRenderer>().sprite;
                 cipopo.parentObj = this.gameObject.transform.parent.gameObject;
                 this.gameObject.transform.parent.gameObject.SetActive(false);
-            
-                SerializeObject.Instance.GetSpeechBubbleSprite.SetActive(false);
+                
+                GameObject speechBubble = SerializeObject.Instance.GetSpeechBubbleSprite;
+                speechBubble.SetActive(false);
+                speechBubble.GetComponent<SpeechBubbleMove>().parent = null;
             
                 isExitChildBackSprite = false;
                 enterChildBackSprite = null;

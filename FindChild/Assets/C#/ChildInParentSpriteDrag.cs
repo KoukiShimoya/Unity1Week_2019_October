@@ -12,7 +12,7 @@ public class ChildInParentSpriteDrag : MonoBehaviour
     [SerializeField, ShowOnly] private bool isExitChildBackSprite;
     private SpriteRenderer spriteRenderer;
     private float mouseDargTime = 0f;
-    private Vector3 defaultPanelPosition = new Vector3(-64, -112, Value.childInParentPositionZ);
+    private Vector3 defaultPanelPosition = new Vector3(-72, -120, Value.childInParentPositionZ);
     
     private void OnMouseDrag()
     {
@@ -70,9 +70,12 @@ public class ChildInParentSpriteDrag : MonoBehaviour
         {
             GameObject parent = this.gameObject.GetComponent<ChildInParentOwnParentObject>().parentObj;
             parent.SetActive(true);
-            SerializeObject.Instance.GetSpeechBubbleSprite.SetActive(true);
+            
+            GameObject speechBubble = SerializeObject.Instance.GetSpeechBubbleSprite;
+            speechBubble.SetActive(true);
+            speechBubble.GetComponent<SpeechBubbleMove>().parent = parent;
+            speechBubble.GetComponent<SpeechBubbleMove>().ChangeSpeechBubblePosition();
             parent.transform.position = this.gameObject.transform.position;
-            parent.transform.GetChild(0).GetComponent<ParentSpriteDrag>().SpeechBubbleMove(this.gameObject.transform.position);
             this.gameObject.transform.localPosition = defaultPanelPosition;
 
             this.gameObject.GetComponent<ChildInParentOwnParentObject>().parentObj = null;

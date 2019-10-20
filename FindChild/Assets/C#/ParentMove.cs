@@ -11,10 +11,10 @@ public class ParentMove : MonoBehaviour
     private const int xMin = -960;
     private const int xMax = 960;
     private const int yMin = -540;
-    private const int yMax = 540;
+    private const int yMax = 216;
     private bool canMove;
 
-    [SerializeField] private float defaultSpeed = 1f;
+    private const float defaultSpeed = 3f;
 
     private void Start()
     {
