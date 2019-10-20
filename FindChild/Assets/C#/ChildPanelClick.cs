@@ -9,7 +9,7 @@ public class ChildPanelClick : MonoBehaviour
     private void OnMouseDown()
     {
         SerializeObject.Instance.GetChildWordText.GetComponent<Text>().text =
-            SpeechBubbleTextCreate.ChildAttributeToText(this.gameObject.transform.parent
-                .GetComponent<OneChildAttribute>().childAttribute, false);
+            SpeechBubbleTextCreate.ChildAttributeToText_Child(this.gameObject.transform.parent
+                .GetComponent<OneChildAttribute>().childAttribute);
     }
 }

@@ -6,20 +6,16 @@ using UnityEngine;
 public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
 {
     [SerializeField] private GameObject childPanelsRoot;
-    [SerializeField] private GameObject parentsRoot;
     [SerializeField] private GameObject childWordText;
     [SerializeField] private GameObject parentsBackSprite;
     [SerializeField] private GameObject speechBubbleText;
     [SerializeField] private GameObject speechBubbleSprite;
+    [SerializeField] private GameObject mainCanvasRoot;
+    [SerializeField] private GameObject calloutSprite;
 
     public GameObject GetChildPanelsRoot
     {
         get { return childPanelsRoot; }
-    }
-
-    public GameObject GetParentsRoot
-    {
-        get { return parentsRoot; }
     }
 
     public GameObject GetChildWordText
@@ -40,5 +36,15 @@ public class SerializeObject : SingletonMonoBehaviour<SerializeObject>
     public GameObject GetSpeechBubbleSprite
     {
         get { return speechBubbleSprite; }
+    }
+
+    public GameObject GetMainCanvasRoot
+    {
+        get { return mainCanvasRoot; }
+    }
+
+    public GameObject GetCalloutSprite
+    {
+        get { return calloutSprite; }
     }
 }

@@ -11,6 +11,9 @@ namespace Constants
         public static char crlf = '\n';
         public static string comma = ",";
         public static string blank = " ";
+        public static string gameScene1 = "GameScene_1";
+        public static string gameScene2 = "GameScene_2";
+        public static string gameScene3 = "GameScene_3";
     }
 
     public static class Value

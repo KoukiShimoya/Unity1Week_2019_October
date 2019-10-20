@@ -8,10 +8,11 @@ using UnityEngine.UI;
 public static class SpeechBubbleTextCreate
 {
     // Start is called before the first frame update
-    public static string ChildAttributeToText(ChildAttribute childAttribute, bool addNewLine)
+    public static string ChildAttributeToText_Child(ChildAttribute childAttribute)
     {
         string bubbleText = "";
         
+        /*
         if (childAttribute.capAttribute.understanding)
         {
             bubbleText += "帽子は" + childAttribute.capAttribute.hasCap;
@@ -29,31 +30,68 @@ public static class SpeechBubbleTextCreate
             }
             bubbleText += "性別は" + childAttribute.sexAttribute.sexType.ToString();
         }
+        */
 
         if (childAttribute.ageAttribute.understanding)
         {
-            if (addNewLine)
-            {
-                bubbleText = AddNewLine(bubbleText);
-            }
-            else
-            {
-                bubbleText = AddComma(bubbleText);
-            }
-            bubbleText += "年齢は" + childAttribute.ageAttribute.age.ToString();
+            bubbleText += "年は" + childAttribute.ageAttribute.age.ToString() + "歳です。";
         }
 
         if (childAttribute.nameAttribute.understanding)
         {
-            if (addNewLine)
+            bubbleText += "名前は" + childAttribute.nameAttribute.name + "です。";
+        }
+
+        if (bubbleText == Word.empty)
+        {
+            bubbleText = "うわぁーーーん。";
+        }
+
+        return bubbleText;
+    }
+    
+    public static string ChildAttributeToText_Parent(ChildAttribute childAttribute)
+    {
+        string bubbleText = "";
+        
+        if (childAttribute.capAttribute.understanding)
+        {
+            if (childAttribute.capAttribute.hasCap)
             {
-                bubbleText = AddNewLine(bubbleText);
+                bubbleText += "帽子をつけています。";
             }
             else
             {
-                bubbleText = AddComma(bubbleText);
+                bubbleText += "帽子はつけていないです。";
             }
-            bubbleText += "名前は" + childAttribute.nameAttribute.name;
+        }
+
+        if (childAttribute.sexAttribute.understanding)
+        {
+            bubbleText = AddNewLine(bubbleText);
+
+            if (childAttribute.sexAttribute.sexType == SexType.Male)
+            {
+                bubbleText += "男の子です。";
+            }
+            else if (childAttribute.sexAttribute.sexType == SexType.Female)
+            {
+                bubbleText += "女の子です。";
+            }
+        }
+
+        if (childAttribute.ageAttribute.understanding)
+        {
+            bubbleText = AddNewLine(bubbleText);
+            
+            bubbleText += "年は" + childAttribute.ageAttribute.age.ToString() +"歳です。";
+        }
+
+        if (childAttribute.nameAttribute.understanding)
+        {
+            bubbleText = AddNewLine(bubbleText);
+            
+            bubbleText += "名前は" + childAttribute.nameAttribute.name + "です。";
         }
 
         return bubbleText;

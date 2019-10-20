@@ -51,8 +51,8 @@ public class ParentSpriteDrag : MonoBehaviour
             speechBubble.GetComponent<SpeechBubbleMove>().parent = this.gameObject;
             speechBubble.GetComponent<SpeechBubbleMove>().ChangeSpeechBubblePosition();
             speechTextUI.GetComponent<Text>().text =
-                SpeechBubbleTextCreate.ChildAttributeToText(this.gameObject.transform.parent
-                    .GetComponent<OneChildAttribute>().childAttribute, true);
+                SpeechBubbleTextCreate.ChildAttributeToText_Parent(this.gameObject.transform.parent
+                    .GetComponent<OneChildAttribute>().childAttribute);
         }
         else
         {
